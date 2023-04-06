@@ -14,7 +14,7 @@ export class InvoiceService {
     return this.invoiceRepository.find();
   }
 
-  async createInvoice(createInvoiceDto: createInvoiceDto) {
+  async createInvoice(createInvoiceDto: createInvoiceDto): Promise<Invoice> {
     return await this.invoiceRepository.save(createInvoiceDto);
   }
 }

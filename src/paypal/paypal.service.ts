@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import createOrderDto from 'src/postgres/order/dto/create.order.dto';
+import { Order } from 'src/postgres/order/entity/order.entity';
+import { Product } from 'src/postgres/products/entity/product.entity';
 
 @Injectable()
 export class PaypalService {
@@ -19,7 +21,7 @@ export class PaypalService {
     return captureData;
   }
 
-  async createOrder(createOrderDto: createOrderDto) {
+  async createOrder(createOrderDto: createOrderDto): Promise<Order> {
     const accessToken = await this.generateAccessToken();
     const url = `${this.baseURL.sandbox}/v2/checkout/orders`;
     const response = await fetch(url, {
@@ -49,7 +51,7 @@ export class PaypalService {
     return data;
   }
 
-  async getProduct(productId: string) {
+  async getProduct(productId: string): Promise<Product> {
     const accessToken = await this.generateAccessToken();
     const url = `${this.baseURL.sandbox}/v1/catalogs/products/${productId}`;
     const response = await fetch(url, {

@@ -14,7 +14,9 @@ export class OrderService {
     return this.orderRepository.find();
   }
 
-  async createOrder(createOrderDto: createOrderDto): Promise<Order> {
+  async createOrder(
+    createOrderDto: createOrderDto,
+  ): Promise<Order | undefined> {
     return this.orderRepository.save(createOrderDto);
   }
 
