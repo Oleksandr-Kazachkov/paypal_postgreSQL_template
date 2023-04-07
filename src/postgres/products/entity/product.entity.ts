@@ -2,27 +2,27 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Product {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   description: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   type: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   category: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   price: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   currency: string;
 
-  @Column({ default: null })
+  @Column({ type: 'varchar', default: null })
   product_paypal_id: string;
 }

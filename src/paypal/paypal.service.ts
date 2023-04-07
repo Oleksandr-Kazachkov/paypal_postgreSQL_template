@@ -5,10 +5,8 @@ import { Product } from 'src/postgres/products/entity/product.entity';
 
 @Injectable()
 export class PaypalService {
-  CLIENT_ID =
-    'AToq7rxUeBG5O8zNK9NWVeHZoy1xZTcLLZkbBTtRpIHT-lIIiIQAi6GAXdyfVjtTir_U6M4tlMpOHWIL';
-  APP_SECRET =
-    'EP2cz7buJd4yXxu6gjVFzqcYA2tNZpG8WuCzaVZteWGwdyTv6AQ3OmLvkPyaq0fxwjw4W6BRoFvmhEUl';
+  CLIENT_ID = process.env.CLIENT_ID;
+  APP_SECRET = process.env.APP_SECRET;
 
   baseURL = {
     sandbox: 'https://api-m.sandbox.paypal.com',

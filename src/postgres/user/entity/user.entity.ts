@@ -2,18 +2,18 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;
 
-  @Column({ default: null })
+  @Column({ default: null, type: 'varchar' })
   user_paypal_id: string;
 
-  @Column({ length: 500 })
+  @Column({ length: 500, type: 'varchar', nullable: false })
   name: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   email: string;
 
-  @Column()
+  @Column({ type: 'varchar', nullable: false })
   password: string;
 }

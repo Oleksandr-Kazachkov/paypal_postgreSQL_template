@@ -6,13 +6,12 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-
 @Entity()
 export class Invoice {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
-  @Column('json')
+  @Column({ type: 'json', nullable: false })
   data: object;
 
   @ManyToOne(() => Order, (order) => order.id)

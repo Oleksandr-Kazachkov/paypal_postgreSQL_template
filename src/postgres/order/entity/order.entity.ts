@@ -11,7 +11,7 @@ import { Invoice } from 'src/postgres/invoices/entity/invoice.entity';
 
 @Entity()
 export class Order {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;
 
   @OneToOne(() => User, (user) => user.id)
@@ -24,6 +24,6 @@ export class Order {
   @Column({ type: 'varchar', nullable: false })
   user_paypal_id: string;
 
-  @Column({ default: '' })
+  @Column({ default: 'PENDING', nullable: false, type: 'varchar' })
   status: string;
 }
