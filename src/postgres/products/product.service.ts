@@ -1,4 +1,7 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable, Inject, BadRequestException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
 import { PaypalService } from 'src/paypal/paypal.service';
 import { Repository } from 'typeorm';
 import createProductDto from './dto/create.product.dto';
@@ -10,6 +13,8 @@ export class ProductService {
     @Inject('PRODUCT_REPOSITORY')
     private productRepository: Repository<Product>,
     private readonly paypalService: PaypalService,
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
   ) {}
 
   async findAll(): Promise<Product[]> {
@@ -17,23 +22,27 @@ export class ProductService {
   }
 
   async createProduct(createProductDto: createProductDto): Promise<Product> {
+    const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.paypalService.generateAccessToken();
-    const url = `${this.paypalService.baseURL.sandbox}/v1/catalogs/products`;
-    const product = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        name: createProductDto.name,
-        description: createProductDto.description,
-        type: createProductDto.type,
-        category: createProductDto.category,
-      }),
-    });
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const url = `${baseURL}/v1/catalogs/products`;
+    const product = await firstValueFrom(
+      this.httpService.post(
+        url,
+        {
+          name: createProductDto.name,
+          description: createProductDto.description,
+          type: createProductDto.type,
+          category: createProductDto.category,
+        },
+        { headers: headers },
+      ),
+    );
 
-    createProductDto.product_paypal_id = (await product.json()).id;
+    createProductDto.product_paypal_id = product.data.id;
 
     if (product) {
       const savedProduct = await this.productRepository.save(createProductDto);

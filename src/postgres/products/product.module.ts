@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PaypalModule } from 'src/paypal/paypal.module';
 import { PaypalService } from 'src/paypal/paypal.service';
@@ -7,7 +8,7 @@ import { ProductService } from './product.service';
 import { productProviders } from './providers/product.provider';
 
 @Module({
-  imports: [DatabaseModule, PaypalModule],
+  imports: [DatabaseModule, PaypalModule, HttpModule],
   providers: [...productProviders, ProductService, PaypalService],
   controllers: [ProductController],
 })

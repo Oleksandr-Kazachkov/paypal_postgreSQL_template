@@ -1,18 +1,17 @@
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { firstValueFrom } from 'rxjs';
 import createOrderDto from 'src/postgres/order/dto/create.order.dto';
 import { Order } from 'src/postgres/order/entity/order.entity';
 import { Product } from 'src/postgres/products/entity/product.entity';
 
 @Injectable()
 export class PaypalService {
-  CLIENT_ID = process.env.CLIENT_ID;
-  APP_SECRET = process.env.APP_SECRET;
-
-  baseURL = {
-    sandbox: 'https://api-m.sandbox.paypal.com',
-    production: 'https://api-m.paypal.com',
-  };
-
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+  ) {}
   async capturePaypalOrder(body: any) {
     const captureData = await this.capturePayment(body);
 
@@ -20,81 +19,95 @@ export class PaypalService {
   }
 
   async createOrder(createOrderDto: createOrderDto): Promise<Order> {
+    const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.generateAccessToken();
-    const url = `${this.baseURL.sandbox}/v2/checkout/orders`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify({
-        intent: 'CAPTURE',
-        payer: {
-          payment_method: 'paypal',
-        },
-        purchase_units: [
-          {
-            amount: {
-              currency_code: createOrderDto.product.currency,
-              value: createOrderDto.product.price,
-            },
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const url = `${baseURL}/v2/checkout/orders`;
+    const response = await firstValueFrom(
+      this.httpService.post(
+        url,
+        {
+          intent: 'CAPTURE',
+          payer: {
+            payment_method: 'paypal',
           },
-        ],
-      }),
-    });
+          purchase_units: [
+            {
+              amount: {
+                currency_code: createOrderDto.product.currency,
+                value: createOrderDto.product.price,
+              },
+            },
+          ],
+        },
+        { headers: headers },
+      ),
+    );
 
-    const data = await response.json();
+    const data = await response.data;
 
     return data;
   }
 
   async getProduct(productId: string): Promise<Product> {
+    const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.generateAccessToken();
-    const url = `${this.baseURL.sandbox}/v1/catalogs/products/${productId}`;
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const url = `${baseURL}/v1/catalogs/products/${productId}`;
+    const response = await firstValueFrom(
+      this.httpService.get(url, {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }),
+    );
 
-    const data = await response.json();
+    const data = response.data;
 
     return data;
   }
 
   async capturePayment(body: any) {
+    const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.generateAccessToken();
-    const url = `${this.baseURL.sandbox}/v2/checkout/orders/${body.resource.id}/capture`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    };
+    const url = `${baseURL}/v2/checkout/orders/${body.resource.id}/capture`;
+    const response = await firstValueFrom(
+      this.httpService.post(url, null, { headers: headers }),
+    );
 
-    const data = await response.json();
+    const data = await response.data;
 
     return data;
   }
 
   async generateAccessToken() {
-    const auth = Buffer.from(this.CLIENT_ID + ':' + this.APP_SECRET).toString(
-      'base64',
+    const clientId = this.configService.get('CLIENT_ID');
+    const appSecret = this.configService.get('APP_SECRET');
+    const baseURL = this.configService.get('SANDBOX');
+    const auth = Buffer.from(clientId + ':' + appSecret).toString('base64');
+    const headers = {
+      Authorization: `Basic ${auth}`,
+    };
+    const url = baseURL + `/v1/oauth2/token`;
+
+    const response = await firstValueFrom(
+      this.httpService.post(
+        url,
+        {
+          body: 'grant_type=client_credentials',
+        },
+        { headers: headers },
+      ),
     );
 
-    const response = await fetch(`${this.baseURL.sandbox}/v1/oauth2/token`, {
-      method: 'POST',
-      body: 'grant_type=client_credentials',
-      headers: {
-        Authorization: `Basic ${auth}`,
-      },
-    });
-
-    const data = await response.json();
+    const data = await response.data;
 
     return data.access_token;
   }

@@ -15,14 +15,21 @@ import { productProviders } from './postgres/products/providers/product.provider
 import { UserModule } from './postgres/user/user.module';
 import { userProviders } from './postgres/user/providers/user.provider';
 import { UserService } from './postgres/user/user.service';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '../.env',
+      isGlobal: true,
+    }),
     DatabaseModule,
     UserModule,
     PaypalModule,
     ProductModule,
     OrderModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [
