@@ -12,4 +12,11 @@ export default class UserController {
 
     return user;
   }
+
+  @Post('/createRandomUser')
+  async createRandomUser(@Body() amount: number) {
+    const response = await this.userService.createUsers(amount);
+
+    return response;
+  }
 }

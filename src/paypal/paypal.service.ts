@@ -88,26 +88,20 @@ export class PaypalService {
   }
 
   async generateAccessToken() {
-    const clientId = this.configService.get('CLIENT_ID');
-    const appSecret = this.configService.get('APP_SECRET');
+    const CLIENT_ID = this.configService.get('CLIENT_ID');
+    const APP_SECRET = this.configService.get('APP_SECRET');
     const baseURL = this.configService.get('SANDBOX');
-    const auth = Buffer.from(clientId + ':' + appSecret).toString('base64');
-    const headers = {
-      Authorization: `Basic ${auth}`,
-    };
-    const url = baseURL + `/v1/oauth2/token`;
+    const auth = Buffer.from(CLIENT_ID + ':' + APP_SECRET).toString('base64');
 
-    const response = await firstValueFrom(
-      this.httpService.post(
-        url,
-        {
-          body: 'grant_type=client_credentials',
-        },
-        { headers: headers },
-      ),
-    );
+    const response = await fetch(`${baseURL}/v1/oauth2/token`, {
+      method: 'POST',
+      body: 'grant_type=client_credentials',
+      headers: {
+        Authorization: `Basic ${auth}`,
+      },
+    });
 
-    const data = await response.data;
+    const data = await response.json();
 
     return data.access_token;
   }

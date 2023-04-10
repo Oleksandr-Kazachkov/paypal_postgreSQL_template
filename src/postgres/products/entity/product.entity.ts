@@ -25,4 +25,7 @@ export class Product {
 
   @Column({ type: 'varchar', default: null })
   product_paypal_id: string;
+
+  @Column({ type: 'int', default: 0 })
+  amountOfLikes: number;
 }

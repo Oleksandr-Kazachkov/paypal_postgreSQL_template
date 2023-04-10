@@ -6,8 +6,10 @@ import { PaypalService } from './paypal/paypal.service';
 import CreateOrderDto from './postgres/order/dto/create.order.dto';
 import { Order } from './postgres/order/entity/order.entity';
 import CreateProductDto from './postgres/products/dto/create.product.dto';
+import PostLikeDto from './postgres/products/dto/post.like.dto';
 import { Product } from './postgres/products/entity/product.entity';
 import { ProductService } from './postgres/products/product.service';
+import AddToFavouriteDto from './postgres/user/dto/add.favourite.dto';
 
 @Controller()
 export class AppController {
@@ -76,5 +78,23 @@ export class AppController {
   @Post('/capturePaypalPayment')
   async capturePaypalPayment(@Body() body: any) {
     return await this.paypalService.capturePaypalOrder(body.id);
+  }
+
+  @Post('/post-like')
+  async postLike(@Body() postLikeDto: PostLikeDto) {
+    const user = await this.userService.findOne(postLikeDto.user_id);
+    postLikeDto.user = user;
+    return await this.productService.postLike(postLikeDto);
+  }
+
+  @Post('/add-to-favourites')
+  async addToFavourites(@Body() addToFavouritesDto: AddToFavouriteDto) {
+    const product = await this.productService.findOne(
+      addToFavouritesDto.productId,
+    );
+
+    addToFavouritesDto.product = product;
+
+    return await this.userService.addToFavouritres(addToFavouritesDto);
   }
 }

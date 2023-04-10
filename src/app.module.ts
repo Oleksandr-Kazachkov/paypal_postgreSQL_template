@@ -17,6 +17,8 @@ import { userProviders } from './postgres/user/providers/user.provider';
 import { UserService } from './postgres/user/user.service';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { likesProviders } from './postgres/products/providers/likes.provider';
+import { favouritesProviders } from './postgres/user/providers/favourites.provider';
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { HttpModule } from '@nestjs/axios';
     ...invoiceProviders,
     ...userProviders,
     ...productProviders,
+    ...likesProviders,
+    ...favouritesProviders,
   ],
 })
 export class AppModule {}
