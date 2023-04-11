@@ -6,12 +6,12 @@ import { ProductService } from './product.service';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
-  @Post('/createProduct')
+  @Post('/create-product')
   async createOrder(@Body() createProductDto: CreateProductDto) {
     return await this.productService.createProduct(createProductDto);
   }
 
-  @Get('/getAllProducts')
+  @Get('/get-all-products')
   async getAllProducts() {
     const foo = await this.productService.findAll();
 

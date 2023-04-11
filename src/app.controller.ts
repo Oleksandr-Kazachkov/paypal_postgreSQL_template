@@ -23,7 +23,7 @@ export class AppController {
     private readonly productService: ProductService,
   ) {}
 
-  @Post('/createOrder')
+  @Post('/create-order')
   async createOrder(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     const user = await this.userService.findOne(createOrderDto.user_paypal_id);
 
@@ -43,14 +43,14 @@ export class AppController {
     return await this.paypalService.createOrder(createOrderDto);
   }
 
-  @Post('/createProduct')
+  @Post('/create-product')
   async createProduct(
     @Body() createProductDto: CreateProductDto,
   ): Promise<Product> {
     return await this.productService.createProduct(createProductDto);
   }
 
-  @Post('/getProduct')
+  @Post('/get-product')
   async getProduct(@Body('productId') productId: string): Promise<Product> {
     return await this.paypalService.getProduct(productId);
   }
@@ -77,7 +77,7 @@ export class AppController {
     return body;
   }
 
-  @Post('/capturePaypalPayment')
+  @Post('/capture-paypal-payment')
   async capturePaypalPayment(@Body() body: any) {
     console.log(body);
     return await this.paypalService.capturePaypalOrder(body.id);
