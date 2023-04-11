@@ -6,6 +6,8 @@ import { PaypalService } from './paypal/paypal.service';
 import CreateOrderDto from './postgres/order/dto/create.order.dto';
 import { Order } from './postgres/order/entity/order.entity';
 import CreateProductDto from './postgres/products/dto/create.product.dto';
+import PostCommetDto from './postgres/products/dto/post.comment.dto';
+import PostGradeDto from './postgres/products/dto/post.grade.dto';
 import PostLikeDto from './postgres/products/dto/post.like.dto';
 import { Product } from './postgres/products/entity/product.entity';
 import { ProductService } from './postgres/products/product.service';
@@ -77,6 +79,7 @@ export class AppController {
 
   @Post('/capturePaypalPayment')
   async capturePaypalPayment(@Body() body: any) {
+    console.log(body);
     return await this.paypalService.capturePaypalOrder(body.id);
   }
 
@@ -96,5 +99,19 @@ export class AppController {
     addToFavouritesDto.product = product;
 
     return await this.userService.addToFavouritres(addToFavouritesDto);
+  }
+
+  @Post('/post-comment')
+  async postComment(@Body() postCommetDto: PostCommetDto) {
+    const user = await this.userService.findOne(postCommetDto.user_id);
+    postCommetDto.user = user;
+    return await this.productService.postComment(postCommetDto);
+  }
+
+  @Post('/post-grade')
+  async postGrade(@Body() postGradeDto: PostGradeDto) {
+    const user = await this.userService.findOne(postGradeDto.user_id);
+    postGradeDto.user = user;
+    return await this.productService.postGrade(postGradeDto);
   }
 }

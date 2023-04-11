@@ -28,4 +28,7 @@ export class Product {
 
   @Column({ type: 'int', default: 0 })
   amountOfLikes: number;
+
+  @Column({ type: 'int', default: null })
+  product_grade: number;
 }

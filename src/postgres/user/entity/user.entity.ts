@@ -1,3 +1,4 @@
+import { Comments } from 'src/postgres/products/entity/comments.entity';
 import { Likes } from 'src/postgres/products/entity/likes.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
@@ -20,4 +21,7 @@ export class User {
 
   @OneToMany(() => Likes, (likes) => likes.user)
   likes: string;
+
+  @OneToMany(() => Comments, (comments) => comments.user)
+  comments: string;
 }

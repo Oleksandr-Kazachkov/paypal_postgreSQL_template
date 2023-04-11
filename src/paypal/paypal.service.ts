@@ -73,16 +73,16 @@ export class PaypalService {
   async capturePayment(body: any) {
     const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.generateAccessToken();
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
-    };
     const url = `${baseURL}/v2/checkout/orders/${body.resource.id}/capture`;
-    const response = await firstValueFrom(
-      this.httpService.post(url, null, { headers: headers }),
-    );
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-    const data = await response.data;
+    const data = await response.json();
 
     return data;
   }

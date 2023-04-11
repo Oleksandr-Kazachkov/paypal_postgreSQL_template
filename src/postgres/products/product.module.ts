@@ -5,6 +5,8 @@ import { PaypalService } from 'src/paypal/paypal.service';
 import { DatabaseModule } from '../postgres.module';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
+import { comentsProviders } from './providers/comments.provider';
+import { gradeProviders } from './providers/grade.provider';
 import { likesProviders } from './providers/likes.provider';
 import { productProviders } from './providers/product.provider';
 
@@ -12,9 +14,11 @@ import { productProviders } from './providers/product.provider';
   imports: [DatabaseModule, PaypalModule, HttpModule],
   providers: [
     ...productProviders,
+    ...likesProviders,
+    ...comentsProviders,
+    ...gradeProviders,
     ProductService,
     PaypalService,
-    ...likesProviders,
   ],
   controllers: [ProductController],
 })

@@ -19,6 +19,8 @@ import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
 import { likesProviders } from './postgres/products/providers/likes.provider';
 import { favouritesProviders } from './postgres/user/providers/favourites.provider';
+import { comentsProviders } from './postgres/products/providers/comments.provider';
+import { gradeProviders } from './postgres/products/providers/grade.provider';
 
 @Module({
   imports: [
@@ -47,6 +49,8 @@ import { favouritesProviders } from './postgres/user/providers/favourites.provid
     ...productProviders,
     ...likesProviders,
     ...favouritesProviders,
+    ...comentsProviders,
+    ...gradeProviders,
   ],
 })
 export class AppModule {}

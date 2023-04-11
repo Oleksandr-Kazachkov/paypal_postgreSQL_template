@@ -3,13 +3,14 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   Column,
+  OneToOne,
 } from 'typeorm';
 import { User } from 'src/postgres/user/entity/user.entity';
 
 @Entity()
-export class Likes {
+export class Grade {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;
 
@@ -17,10 +18,13 @@ export class Likes {
   @JoinColumn()
   user: number;
 
-  @OneToOne(() => Product, (product) => product.id)
+  @ManyToOne(() => Product, (product) => product.id)
   @JoinColumn()
   product: number;
 
   @Column({ type: 'text', nullable: false })
   product_paypal_id: string;
+
+  @Column({ type: 'int', nullable: false })
+  grade: number;
 }

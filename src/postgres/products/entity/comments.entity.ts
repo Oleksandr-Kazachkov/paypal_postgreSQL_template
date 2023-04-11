@@ -3,21 +3,24 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   Column,
 } from 'typeorm';
 import { User } from 'src/postgres/user/entity/user.entity';
 
 @Entity()
-export class Likes {
+export class Comments {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;
 
-  @OneToOne(() => User, (user) => user.id)
+  @Column({ type: 'text', default: null })
+  comment_data: string;
+
+  @ManyToOne(() => User, (user) => user.id)
   @JoinColumn()
   user: number;
 
-  @OneToOne(() => Product, (product) => product.id)
+  @ManyToOne(() => Product, (product) => product.id)
   @JoinColumn()
   product: number;
 
