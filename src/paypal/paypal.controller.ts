@@ -4,7 +4,7 @@ import { OrderRepository } from 'src/components/order/order.repository';
 import { ProductEntity } from 'src/components/products/entity/product.entity';
 import { PaypalService } from './paypal.service';
 
-@Controller()
+@Controller('/paypal')
 export class PaypalController {
   constructor(
     private readonly paypalService: PaypalService,

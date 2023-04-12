@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from '../../user/entity/user.entity';
 
-@Entity()
+@Entity('favourites')
 export class FavouritesEntity {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;

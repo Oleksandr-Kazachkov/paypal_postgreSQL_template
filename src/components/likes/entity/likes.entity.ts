@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 
-@Entity()
+@Entity('likes')
 export class LikesEntity {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;

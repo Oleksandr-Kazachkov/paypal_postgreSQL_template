@@ -27,11 +27,6 @@ import { GradeRepository } from './components/grade/grade.repository';
 import { InvoiceRepository } from './components/invoices/invoice.repository';
 import { OrderRepository } from './components/order/order.repository';
 import { UserRepository } from './components/user/user.repository';
-import UserController from './components/user/user.controller';
-import { LikeController } from './components/likes/like.controller';
-import { OrderController } from './components/order/order.controller';
-import { ProductController } from './components/products/product.controller';
-import { PaypalController } from './paypal/paypal.controller';
 import { FavouritesModule } from './components/favourites/favourites.module';
 import { CommentsModule } from './components/comments/comments.module';
 import { GradeModule } from './components/grade/grade.module';
@@ -51,13 +46,6 @@ import { GradeModule } from './components/grade/grade.module';
     FavouritesModule,
     CommentsModule,
     GradeModule,
-  ],
-  controllers: [
-    UserController,
-    LikeController,
-    OrderController,
-    ProductController,
-    PaypalController,
   ],
   providers: [
     PaypalService,

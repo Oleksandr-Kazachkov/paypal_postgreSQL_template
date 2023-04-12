@@ -4,7 +4,7 @@ import CreateProductDto from './dto/create.product.dto';
 import { ProductEntity } from './entity/product.entity';
 import { ProductService } from './product.service';
 
-@Controller()
+@Controller('/products')
 export class ProductController {
   constructor(
     private readonly productService: ProductService,

@@ -9,7 +9,7 @@ import {
 import { UserEntity } from 'src/components/user/entity/user.entity';
 import { InvoiceEntity } from 'src/components/invoices/entity/invoice.entity';
 
-@Entity()
+@Entity('order')
 export class OrderEntity {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;

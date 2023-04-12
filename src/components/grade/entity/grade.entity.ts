@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 
-@Entity()
+@Entity('grade')
 export class GradeEntity {
   @PrimaryGeneratedColumn({ type: 'int4' })
   id: number;

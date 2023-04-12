@@ -6,7 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm';
-@Entity()
+@Entity('invoice')
 export class InvoiceEntity {
   @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;

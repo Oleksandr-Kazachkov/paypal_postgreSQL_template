@@ -3,7 +3,7 @@ import { ProductService } from '../products/product.service';
 import { UserRepository } from '../user/user.repository';
 import PostGradeDto from './dto/post.grade.dto';
 
-@Controller()
+@Controller('/grade')
 export class GradeController {
   constructor(
     private readonly productService: ProductService,

@@ -2,16 +2,14 @@ import { Body, Controller, Post } from '@nestjs/common';
 import CreateOrderDto from './dto/create.order.dto';
 import { OrderService } from './order.service';
 import { OrderEntity } from './entity/order.entity';
-import { UserService } from '../user/user.service';
 import { ProductRepository } from '../products/product.repository';
 import { OrderRepository } from './order.repository';
 import { UserRepository } from '../user/user.repository';
 
-@Controller()
+@Controller('/orders')
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,
-    private readonly userService: UserService,
     private readonly productRepository: ProductRepository,
     private readonly orderRepository: OrderRepository,
     private readonly userRepository: UserRepository,

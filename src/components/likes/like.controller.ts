@@ -3,7 +3,7 @@ import { ProductService } from '../products/product.service';
 import { UserRepository } from '../user/user.repository';
 import PostLikeDto from './dto/post.like.dto';
 
-@Controller()
+@Controller('/like')
 export class LikeController {
   constructor(
     private readonly userRepository: UserRepository,
