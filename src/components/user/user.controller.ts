@@ -1,14 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import CreateUserDto from './dto/create.user.dto';
 import { UserRepository } from './user.repository';
-import { UserService } from './user.service';
 
 @Controller('/users')
 export default class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly userRepository: UserRepository,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   @Post('/create-user')
   async createUser(@Body() createUserDto: CreateUserDto) {
@@ -22,5 +18,15 @@ export default class UserController {
     const response = await this.userRepository.createUsers(amount);
 
     return response;
+  }
+
+  @Get('/find-one-with-settings')
+  async findOneUser(@Body() userId: any) {
+    return await this.userRepository.findOneWithSettings(userId.userId);
+  }
+
+  @Get('/find-one-with-orders')
+  async findOneUserWithOrders(@Body() userId: any) {
+    return await this.userRepository.findOneWithOrders(userId.userId);
   }
 }

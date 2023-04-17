@@ -9,6 +9,9 @@ export default class createSettingsDto {
   user?: UserEntity;
 
   @ApiProperty()
+  user_paypal_id: string;
+
+  @ApiProperty()
   email_notifications: boolean;
 
   @ApiProperty()

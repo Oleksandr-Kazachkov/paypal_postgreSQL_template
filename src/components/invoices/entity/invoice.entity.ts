@@ -16,5 +16,11 @@ export class InvoiceEntity {
 
   @ManyToOne(() => OrderEntity, (order) => order.id)
   @JoinColumn()
-  order: OrderEntity;
+  order: OrderEntity | number;
+
+  @Column({ type: 'float', nullable: false })
+  price: number;
+
+  @Column({ type: 'text', nullable: false })
+  status: string;
 }

@@ -30,6 +30,10 @@ import { UserRepository } from './components/user/user.repository';
 import { FavouritesModule } from './components/favourites/favourites.module';
 import { CommentsModule } from './components/comments/comments.module';
 import { GradeModule } from './components/grade/grade.module';
+import { SettingsRepository } from './components/settings/settings.repository';
+import { settingsProviders } from './components/settings/provider/settings.provider';
+import { InvoiceModule } from './components/invoices/invoice.module';
+import { FakerService } from './utils/faker/faker.service';
 
 @Module({
   imports: [
@@ -46,6 +50,7 @@ import { GradeModule } from './components/grade/grade.module';
     FavouritesModule,
     CommentsModule,
     GradeModule,
+    InvoiceModule,
   ],
   providers: [
     PaypalService,
@@ -60,6 +65,11 @@ import { GradeModule } from './components/grade/grade.module';
     InvoiceRepository,
     OrderRepository,
     UserRepository,
+    SettingsRepository,
+    InvoiceRepository,
+    FakerService,
+    ...invoiceProviders,
+    ...settingsProviders,
     ...orderProviders,
     ...databaseProviders,
     ...invoiceProviders,

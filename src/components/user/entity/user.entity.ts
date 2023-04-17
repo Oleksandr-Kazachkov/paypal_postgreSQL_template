@@ -1,6 +1,14 @@
 import { CommentsEntity } from 'src/components/comments/entity/comments.entity';
 import { LikesEntity } from 'src/components/likes/entity/likes.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { OrderEntity } from 'src/components/order/entity/order.entity';
+import { SettingsEntity } from 'src/components/settings/entity/settings.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -20,8 +28,14 @@ export class UserEntity {
   password: string;
 
   @OneToMany(() => LikesEntity, (likes) => likes.user)
-  likes: string;
+  likes: LikesEntity | number;
 
   @OneToMany(() => CommentsEntity, (comments) => comments.user)
-  comments: string;
+  comments: CommentsEntity | number;
+
+  @OneToOne(() => SettingsEntity, (settings) => settings.user)
+  settings: SettingsEntity | number;
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
+  orders: OrderEntity | number;
 }

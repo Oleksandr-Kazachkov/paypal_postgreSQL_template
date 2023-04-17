@@ -21,6 +21,12 @@ import { CommentsRepository } from '../comments/comments.repository';
 import { GradeRepository } from '../grade/grade.repository';
 import { OrderRepository } from './order.repository';
 import { UserRepository } from '../user/user.repository';
+import { settingsProviders } from '../settings/provider/settings.provider';
+import { SettingsRepository } from '../settings/settings.repository';
+import { OrderProductsEntity } from './entity/order.products.entity';
+import { orderProductsProviders } from './providers/order.products.provider';
+import { OrderProductsRepository } from './order.products.repository';
+import { FakerService } from 'src/utils/faker/faker.service';
 
 @Module({
   imports: [DatabaseModule, PaypalModule, OrderModule, HttpModule, UserModule],
@@ -32,6 +38,11 @@ import { UserRepository } from '../user/user.repository';
     ...likesProviders,
     ...commentsProviders,
     ...gradeProviders,
+    ...settingsProviders,
+    ...orderProductsProviders,
+    OrderProductsRepository,
+    OrderProductsEntity,
+    SettingsRepository,
     OrderService,
     PaypalService,
     OrderService,
@@ -43,6 +54,7 @@ import { UserRepository } from '../user/user.repository';
     GradeRepository,
     OrderRepository,
     UserRepository,
+    FakerService,
   ],
   controllers: [OrderController],
 })

@@ -7,4 +7,10 @@ export default class createInvoiceDto {
 
   @ApiProperty()
   data: object;
+
+  @ApiProperty()
+  price: number;
+
+  @ApiProperty()
+  status: string;
 }

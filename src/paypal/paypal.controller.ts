@@ -23,18 +23,25 @@ export class PaypalController {
   async capturePayment(@Body() body: any) {
     const response = await this.paypalService.capturePayment(body);
 
-    console.log(response);
+    console.dir(response, { depth: null });
 
     if (response.payer.payer_id) {
-      const order = await this.orderRepository.findOneOrderByUserId(
+      const order = await this.orderRepository.findOneOrderByOrderId(
         response.payer.payer_id,
       );
 
       await this.orderRepository.updateOrderStatus(order, response.status);
 
+      const price = parseFloat(
+        response.purchase_units[0].payments.captures[0]
+          .seller_receivable_breakdown.gross_amount.value,
+      );
+
       await this.invoiceService.createInvoice({
         data: response,
         order: order,
+        price: price,
+        status: response.status,
       });
     }
 

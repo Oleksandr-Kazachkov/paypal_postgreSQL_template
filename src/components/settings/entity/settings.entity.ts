@@ -14,7 +14,7 @@ export class SettingsEntity {
 
   @OneToOne(() => UserEntity, (user) => user.id)
   @JoinColumn()
-  user: UserEntity;
+  user?: UserEntity;
 
   @Column()
   user_paypal_id: string;

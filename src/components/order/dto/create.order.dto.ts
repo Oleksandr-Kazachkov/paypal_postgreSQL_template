@@ -1,9 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ProductEntity } from 'src/components/products/entity/product.entity';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 
-export default class createOrderDto {
+export default class CreateOrderDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
@@ -18,9 +17,8 @@ export default class createOrderDto {
   status?: string;
 
   @ApiProperty()
-  @IsString()
-  product_id: string;
+  product_id?: Array<string>;
 
   @ApiProperty()
-  product?: ProductEntity;
+  product?: { price: string; currency: string };
 }
