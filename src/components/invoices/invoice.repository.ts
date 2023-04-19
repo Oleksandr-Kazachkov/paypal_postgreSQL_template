@@ -32,17 +32,34 @@ export class InvoiceRepository {
   }
 
   async createInvoices(userAmount: any) {
-    const invoices = [];
-
     for (let i = 0; i < userAmount.amount; i++) {
-      const user = this.fakerService.createRandomInvoice();
-      invoices.push(user);
+      await this.save(this.fakerService.createRandomInvoice());
     }
+  }
 
-    return invoices.forEach(async () => {
-      await this.invoiceRepository.save(
-        this.fakerService.createRandomInvoice(),
-      );
+  async findManyWithStatus() {
+    const response = [];
+    const [countInfo, entities] = await Promise.all([
+      this.invoiceRepository
+        .createQueryBuilder()
+        .select('status')
+        .addSelect('COUNT(*)', 'count')
+        .groupBy('status')
+        .getRawMany(),
+      this.invoiceRepository.find(),
+    ]);
+
+    countInfo.filter((element) => {
+      response.push({
+        status: element.status,
+        count: element.count,
+        objects: entities.filter(
+          (el) => element.status === el.status,
+          [].push(element),
+        ),
+      });
     });
+
+    return response;
   }
 }

@@ -12,7 +12,7 @@ export class FavouriteRepository {
 
   async addToFavourites(addToFavouriteDto: AddToFavouriteDto) {
     return await this.favouritesRepository.save({
-      user: addToFavouriteDto.user.id,
+      user: addToFavouriteDto.user,
       product: addToFavouriteDto.product.id,
       product_paypal_id: addToFavouriteDto.product.product_paypal_id,
     });

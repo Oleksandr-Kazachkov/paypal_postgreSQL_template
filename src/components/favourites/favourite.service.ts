@@ -11,9 +11,7 @@ export class FavouriteService {
   ) {}
 
   async addToFavouritres(addToFavouriteDto: AddToFavouriteDto) {
-    const user = await this.userRepository.findOneById(
-      addToFavouriteDto.userPaypalId,
-    );
+    const user = await this.userRepository.findOneById(addToFavouriteDto.user);
 
     addToFavouriteDto.userId = user.id;
 

@@ -13,6 +13,7 @@ import { productProviders } from './providers/product.provider';
 import { LikesRepository } from '../likes/likes.repository';
 import { CommentsRepository } from '../comments/comments.repository';
 import { GradeRepository } from '../grade/grade.repository';
+import { FakerService } from 'src/utils/faker/faker.service';
 
 @Module({
   imports: [DatabaseModule, PaypalModule, HttpModule],
@@ -27,6 +28,7 @@ import { GradeRepository } from '../grade/grade.repository';
     LikesRepository,
     CommentsRepository,
     GradeRepository,
+    FakerService,
   ],
   controllers: [ProductController],
 })

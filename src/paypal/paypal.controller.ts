@@ -26,8 +26,8 @@ export class PaypalController {
     console.dir(response, { depth: null });
 
     if (response.payer.payer_id) {
-      const order = await this.orderRepository.findOneOrderByOrderId(
-        response.payer.payer_id,
+      const order = await this.orderRepository.findOneOrderById(
+        response.purchase_units.reference_id,
       );
 
       await this.orderRepository.updateOrderStatus(order, response.status);

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import CreateOrderDto from './dto/create.order.dto';
 import { OrderService } from './order.service';
 import { ProductRepository } from '../products/product.repository';
@@ -18,14 +18,10 @@ export class OrderController {
 
   @Post('/create-order')
   async createOrder(@Body() createOrderDto: CreateOrderDto) {
-    const user = await this.userRepository.findOneById(
-      createOrderDto.user_paypal_id,
-    );
+    const user = await this.userRepository.findOneById(createOrderDto.user);
 
     const order = await this.orderRepository.saveOrder({
-      user: user,
-      user_paypal_id: createOrderDto.user_paypal_id,
-      status: 'PENDING',
+      user: user.id,
     });
 
     const products = {
@@ -40,7 +36,7 @@ export class OrderController {
           order: order,
           product: product,
         });
-        const priceProduct = new Decimal(product.price);
+        const priceProduct = new Decimal(product.price / 100);
         const sum = new Decimal(product.price);
         products.price = Decimal.add(sum, priceProduct).toString();
       }),
@@ -48,7 +44,7 @@ export class OrderController {
 
     createOrderDto.product = products;
 
-    return await this.orderService.createOrder(createOrderDto);
+    return await this.orderService.createOrder(createOrderDto, order);
   }
 
   @Get('/find-one-with-invoices/:orderId')
@@ -61,9 +57,9 @@ export class OrderController {
     return await this.orderRepository.findManyWithStatus(status);
   }
 
-  @Get('/order-by-price/:price')
-  async getOrderByPrice(@Param('price') price: number) {
-    return await this.orderRepository.findOrderByPrice(price);
+  @Get('/order-by-price')
+  async getOrderByPrice(@Body() prices: number) {
+    return await this.orderRepository.findOrderByPrice(prices);
   }
 
   @Get('/order-by-amount-products/:orderId')
@@ -73,8 +69,35 @@ export class OrderController {
 
   @Post('/create-random-orders')
   async createRandomOrders(@Body() amount: number) {
-    const response = await this.orderRepository.createOrders(amount);
+    try {
+      await this.orderRepository.createOrders(amount);
+    } catch (err) {}
+  }
 
-    return response;
+  @Post('/create-random-order-products')
+  async createRandomOrderProducts(@Body() amount: number) {
+    try {
+      await this.orderProductsRepository.createOrderProducts(amount);
+    } catch (err) {}
+  }
+
+  @Get('/user-spend-all-time')
+  async getUserSpendAllTime(@Query('userId') userId: number) {
+    return await this.orderRepository.getSpendAllTime(userId);
+  }
+
+  @Get('/get-least-products')
+  async getLeastProducts() {
+    return await this.orderProductsRepository.leastProducts();
+  }
+
+  @Get('/get-most-products')
+  async getMaxProducts() {
+    return await this.orderProductsRepository.mostProducts();
+  }
+
+  @Get('/get-graph-for-pie-order-status')
+  async getGraphForPieByOrderStatus() {
+    return await this.orderRepository.getGraphForPieByOrderStatus();
   }
 }

@@ -21,7 +21,7 @@ export default class createProductDto {
 
   @ApiProperty()
   @IsString()
-  price: string;
+  price: number;
 
   @ApiProperty()
   @IsString()

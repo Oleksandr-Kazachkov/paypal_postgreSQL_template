@@ -4,8 +4,8 @@ import { OrderEntity } from '../entity/order.entity';
 
 export default class CreateOrderProductsDto {
   @ApiProperty()
-  order: OrderEntity;
+  order: OrderEntity | number;
 
   @ApiProperty()
-  product: ProductEntity;
+  product: ProductEntity | number;
 }

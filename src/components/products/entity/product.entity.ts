@@ -18,8 +18,8 @@ export class ProductEntity {
   @Column({ type: 'varchar', nullable: false })
   category: string;
 
-  @Column({ type: 'varchar', nullable: false })
-  price: string;
+  @Column({ type: 'int', nullable: false })
+  price: number;
 
   @Column({ type: 'varchar', nullable: false })
   currency: string;

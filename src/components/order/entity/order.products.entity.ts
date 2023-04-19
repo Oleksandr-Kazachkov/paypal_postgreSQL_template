@@ -9,9 +9,9 @@ export class OrderProductsEntity {
 
   @ManyToOne(() => OrderEntity, (order) => order.id)
   @JoinColumn()
-  order: OrderEntity;
+  order: OrderEntity | number;
 
   @ManyToOne(() => ProductEntity, (product) => product.id)
   @JoinColumn()
-  product: ProductEntity;
+  product: ProductEntity | number;
 }

@@ -19,4 +19,9 @@ export class InvoiceController {
 
     return response;
   }
+
+  @Get('/find-many-with-status')
+  async findManyWithStatus() {
+    return this.invoiceRepository.findManyWithStatus();
+  }
 }

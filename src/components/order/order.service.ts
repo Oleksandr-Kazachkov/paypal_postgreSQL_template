@@ -14,7 +14,10 @@ export class OrderService {
     private readonly httpService: HttpService,
   ) {}
 
-  async createOrder(createOrderDto: createOrderDto): Promise<OrderEntity> {
+  async createOrder(
+    createOrderDto: createOrderDto,
+    order: OrderEntity,
+  ): Promise<OrderEntity> {
     const baseURL = this.configService.get('SANDBOX');
     const accessToken = await this.paypalService.generateAccessToken();
     const headers = {
@@ -34,8 +37,9 @@ export class OrderService {
             {
               amount: {
                 currency_code: createOrderDto.product.currency,
-                value: createOrderDto.product.price,
+                value: createOrderDto.product.price.toString(),
               },
+              reference_id: order.id,
             },
           ],
         },

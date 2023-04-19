@@ -23,4 +23,7 @@ export class InvoiceEntity {
 
   @Column({ type: 'text', nullable: false })
   status: string;
+
+  @Column({ type: 'text', default: new Date().toISOString() })
+  created_at: Date;
 }

@@ -3,7 +3,7 @@ import { OrderEntity } from 'src/components/order/entity/order.entity';
 
 export default class createInvoiceDto {
   @ApiProperty()
-  order: OrderEntity;
+  order: OrderEntity | number;
 
   @ApiProperty()
   data: object;

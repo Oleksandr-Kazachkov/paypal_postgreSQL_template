@@ -7,12 +7,12 @@ export default class PostLikeDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  user_id: string;
+  user_id: number;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  product_id: string;
+  product_id: number;
 
   @ApiProperty()
   product: ProductEntity;

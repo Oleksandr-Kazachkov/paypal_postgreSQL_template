@@ -29,4 +29,9 @@ export default class UserController {
   async findOneUserWithOrders(@Body() userId: any) {
     return await this.userRepository.findOneWithOrders(userId.userId);
   }
+
+  @Get('/find-users-by-month')
+  async findUsersByMonth() {
+    return await this.userRepository.usersByMonth();
+  }
 }

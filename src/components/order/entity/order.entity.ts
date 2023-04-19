@@ -23,9 +23,6 @@ export class OrderEntity {
   @OneToMany(() => InvoiceEntity, (invoice) => invoice.order)
   invoice: InvoiceEntity | number;
 
-  @Column({ type: 'varchar', nullable: false })
-  user_paypal_id: string;
-
   @Column({ default: 'PENDING', nullable: false, type: 'varchar' })
   status: string;
 
@@ -34,4 +31,10 @@ export class OrderEntity {
     (order_products) => order_products.product,
   )
   order_products: OrderProductsEntity | number;
+
+  @Column({ type: 'text', default: new Date().toISOString() })
+  created_at: Date;
+
+  @Column({ type: 'text', default: new Date().toISOString() })
+  updated_at: Date;
 }

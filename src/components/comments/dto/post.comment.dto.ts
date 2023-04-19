@@ -7,7 +7,7 @@ export default class PostCommetDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  user_id: string;
+  user_id: number;
 
   @ApiProperty()
   @IsString()
@@ -20,7 +20,7 @@ export default class PostCommetDto {
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
-  product_id: string;
+  product_id: number;
 
   @ApiProperty()
   user?: UserEntity;

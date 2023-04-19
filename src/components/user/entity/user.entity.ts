@@ -38,4 +38,10 @@ export class UserEntity {
 
   @OneToMany(() => OrderEntity, (order) => order.user)
   orders: OrderEntity | number;
+
+  @Column({ type: 'text', default: new Date().toISOString() })
+  created_at: Date;
+
+  @Column({ type: 'text', default: new Date().toISOString() })
+  updated_at: Date;
 }

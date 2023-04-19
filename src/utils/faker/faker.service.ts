@@ -1,43 +1,57 @@
 import { faker } from '@faker-js/faker';
-import { InvoiceEntity } from 'src/components/invoices/entity/invoice.entity';
-import { OrderEntity } from 'src/components/order/entity/order.entity';
+import createInvoiceDto from 'src/components/invoices/dto/create.invoice.dto';
+import CreateOrderDto from 'src/components/order/dto/create.order.dto';
+import CreateOrderProductsDto from 'src/components/order/dto/create.order.products.dto';
+import { ProductEntity } from 'src/components/products/entity/product.entity';
 import { UserEntity } from 'src/components/user/entity/user.entity';
 
 export class FakerService {
   status = ['PENDING', 'COMPLETED'];
 
-  createRandomUser(): UserEntity {
+  createRandomUser(): Partial<UserEntity> {
     return {
       id: faker.datatype.number(),
       user_paypal_id: faker.datatype.uuid(),
       name: faker.internet.userName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
-      comments: faker.datatype.number(),
       settings: faker.datatype.number(),
-      orders: faker.datatype.number(),
-      likes: faker.datatype.number(),
     };
   }
 
-  createRandomOrder(): OrderEntity {
+  createRandomOrder(): CreateOrderDto {
     return {
-      id: faker.datatype.number(),
-      user: this.createRandomUser(),
+      user: faker.datatype.number({ min: 0, max: 996 }),
       status: faker.helpers.arrayElement(Object.values(this.status)),
-      user_paypal_id: faker.datatype.uuid(),
-      invoice: faker.datatype.number(),
-      order_products: faker.datatype.number(),
     };
   }
 
-  createRandomInvoice(): Partial<InvoiceEntity> {
+  createRandomInvoice(): createInvoiceDto {
     return {
-      id: faker.datatype.number(),
       data: { data: faker.datatype.json() },
-      order: faker.datatype.number(),
+      order: faker.datatype.number({ min: 0, max: 1000 }),
       price: faker.datatype.number(),
       status: faker.helpers.arrayElement(Object.values(this.status)),
+    };
+  }
+
+  createRandomOrderProducts(): CreateOrderProductsDto {
+    return {
+      order: faker.datatype.number({ min: 1, max: 600 }),
+      product: faker.datatype.number({ min: 1, max: 2 }),
+    };
+  }
+
+  createRandomProducts(): Partial<ProductEntity> {
+    return {
+      name: faker.datatype.string(),
+      description: faker.datatype.string(),
+      type: 'DIGITAL',
+      category: 'OTHER',
+      price: faker.datatype.number(),
+      currency: 'usd',
+      product_paypal_id: faker.datatype.string(),
+      product_grade: faker.datatype.number({ min: 0, max: 10 }),
     };
   }
 }
