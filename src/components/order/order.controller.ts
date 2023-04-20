@@ -6,6 +6,7 @@ import { OrderRepository } from './order.repository';
 import { UserRepository } from '../user/user.repository';
 import Decimal from 'decimal.js';
 import { OrderProductsRepository } from './order.products.repository';
+import GetOrdersByTimeDto from './dto/get.order.by.time.dto';
 @Controller('/orders')
 export class OrderController {
   constructor(
@@ -99,5 +100,10 @@ export class OrderController {
   @Get('/get-graph-for-pie-order-status')
   async getGraphForPieByOrderStatus() {
     return await this.orderRepository.getGraphForPieByOrderStatus();
+  }
+
+  @Get('/get-orders-by-time')
+  async getOrdersByTime(@Body() dates: GetOrdersByTimeDto) {
+    return await this.orderRepository.getOrdersByTime(dates);
   }
 }

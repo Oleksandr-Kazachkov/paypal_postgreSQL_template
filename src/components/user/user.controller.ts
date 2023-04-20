@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import CreateUserDto from './dto/create.user.dto';
 import { UserRepository } from './user.repository';
 
@@ -31,7 +31,7 @@ export default class UserController {
   }
 
   @Get('/find-users-by-month')
-  async findUsersByMonth() {
-    return await this.userRepository.usersByMonth();
+  async findUsersByMonth(@Query() year: number) {
+    return await this.userRepository.usersByMonth(year);
   }
 }

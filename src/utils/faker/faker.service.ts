@@ -16,6 +16,10 @@ export class FakerService {
       email: faker.internet.email(),
       password: faker.internet.password(),
       settings: faker.datatype.number(),
+      created_at: faker.date.between(
+        '2023-01-01T00:00:00.000Z',
+        '2023-12-12T00:00:00.000Z',
+      ),
     };
   }
 
@@ -23,6 +27,10 @@ export class FakerService {
     return {
       user: faker.datatype.number({ min: 0, max: 996 }),
       status: faker.helpers.arrayElement(Object.values(this.status)),
+      created_at: faker.date.between(
+        '2023-01-01T00:00:00.000Z',
+        '2023-12-12T00:00:00.000Z',
+      ),
     };
   }
 

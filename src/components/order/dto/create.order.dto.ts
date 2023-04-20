@@ -15,5 +15,8 @@ export default class CreateOrderDto {
   product_id?: Array<number>;
 
   @ApiProperty()
+  created_at?: Date;
+
+  @ApiProperty()
   product?: { price: string; currency: string };
 }
