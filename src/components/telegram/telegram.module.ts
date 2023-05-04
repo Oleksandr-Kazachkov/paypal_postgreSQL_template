@@ -17,7 +17,7 @@ import { userProviders } from '../user/providers/user.provider';
   imports: [
     TelegrafModule.forRootAsync({
       useFactory: () => ({
-        token: '6115836786:AAG9GWbLFTIyjXcScTL6sfUpWrjTR6rxTPI',
+        token: process.env.TELEGRAM_TOKEN,
       }),
     }),
     ConfigModule.forRoot(),
