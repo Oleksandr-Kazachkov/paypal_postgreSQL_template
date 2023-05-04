@@ -108,4 +108,8 @@ export class OrderProductsRepository {
       product.id`,
     );
   }
+
+  async findAll() {
+    return await this.orderProductsRepository.find();
+  }
 }

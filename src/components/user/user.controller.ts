@@ -1,14 +1,24 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import CreateUserDto from './dto/create.user.dto';
 import { UserRepository } from './user.repository';
+import { UserService } from './user.service';
+import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
 
 @Controller('/users')
 export default class UserController {
-  constructor(private readonly userRepository: UserRepository) {}
+  constructor(
+    private readonly userRepository: UserRepository,
+    private readonly userService: UserService,
+    private readonly userTelegramRepository: TelegramUserRepository,
+  ) {}
 
   @Post('/create-user')
   async createUser(@Body() createUserDto: CreateUserDto) {
     const user = await this.userRepository.save(createUserDto);
+
+    await this.userTelegramRepository.save({
+      first_name: createUserDto.name,
+    });
 
     return user;
   }
@@ -32,6 +42,11 @@ export default class UserController {
 
   @Get('/find-users-by-month')
   async findUsersByMonth(@Query() year: number) {
-    return await this.userRepository.usersByMonth(year);
+    return await this.userService.usersByMonth(year);
+  }
+
+  @Post('/bulc-users')
+  async bulcItems() {
+    return await this.userService.migrateData();
   }
 }

@@ -37,7 +37,7 @@ export class UserEntity {
   settings: SettingsEntity | number;
 
   @OneToMany(() => OrderEntity, (order) => order.user)
-  orders: OrderEntity | number;
+  orderId: OrderEntity | number;
 
   @Column({ type: 'text', default: new Date().toISOString() })
   created_at: Date;

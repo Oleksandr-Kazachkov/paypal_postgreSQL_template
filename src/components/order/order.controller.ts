@@ -99,11 +99,26 @@ export class OrderController {
 
   @Get('/get-graph-for-pie-order-status')
   async getGraphForPieByOrderStatus() {
-    return await this.orderRepository.getGraphForPieByOrderStatus();
+    return await this.orderService.getGraphForPieByOrderStatus();
   }
 
   @Get('/get-orders-by-time')
   async getOrdersByTime(@Body() dates: GetOrdersByTimeDto) {
-    return await this.orderRepository.getOrdersByTime(dates);
+    return await this.orderService.getOrdersByTime(dates);
+  }
+
+  @Post('/bulc-orders')
+  async bulcItems() {
+    return await this.orderService.migrateOrders();
+  }
+
+  @Post('/bulc-order-products')
+  async bulcOrderProduct() {
+    return await this.orderService.migrateOrderProducts();
+  }
+
+  @Get('/test/test')
+  async test() {
+    return await this.orderRepository.test();
   }
 }

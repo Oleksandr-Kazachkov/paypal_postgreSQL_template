@@ -17,9 +17,10 @@ import { SettingsRepository } from '../settings/settings.repository';
 import { userProviders } from '../user/providers/user.provider';
 import { UserRepository } from '../user/user.repository';
 import { GradeController } from './grade.controller';
+import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, ElasticSearchModule],
   providers: [
     ...gradeProviders,
     ...databaseProviders,

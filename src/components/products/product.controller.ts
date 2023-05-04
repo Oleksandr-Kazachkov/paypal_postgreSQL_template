@@ -46,4 +46,9 @@ export class ProductController {
 
     return foo;
   }
+
+  @Post('/bulc-products')
+  async bulcOrderProduct() {
+    return await this.productService.bulcProducts();
+  }
 }

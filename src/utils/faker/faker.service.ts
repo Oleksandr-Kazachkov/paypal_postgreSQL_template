@@ -1,6 +1,5 @@
 import { faker } from '@faker-js/faker';
 import createInvoiceDto from 'src/components/invoices/dto/create.invoice.dto';
-import CreateOrderDto from 'src/components/order/dto/create.order.dto';
 import CreateOrderProductsDto from 'src/components/order/dto/create.order.products.dto';
 import { ProductEntity } from 'src/components/products/entity/product.entity';
 import { UserEntity } from 'src/components/user/entity/user.entity';
@@ -23,7 +22,7 @@ export class FakerService {
     };
   }
 
-  createRandomOrder(): CreateOrderDto {
+  createRandomOrder() {
     return {
       user: faker.datatype.number({ min: 0, max: 996 }),
       status: faker.helpers.arrayElement(Object.values(this.status)),
@@ -61,5 +60,17 @@ export class FakerService {
       product_paypal_id: faker.datatype.string(),
       product_grade: faker.datatype.number({ min: 0, max: 10 }),
     };
+  }
+
+  generateRandomArray() {
+    const randomNumber = faker.datatype.number({ min: 1, max: 2 });
+
+    const array = [];
+
+    for (let i = 0; i < randomNumber; i++) {
+      array.push(faker.datatype.number({ min: 1, max: 2 }));
+    }
+
+    return array;
   }
 }

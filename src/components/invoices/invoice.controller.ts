@@ -1,10 +1,14 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import FindOrderPriceDto from './dto/find.order.price.dto';
 import { InvoiceRepository } from './invoice.repository';
+import { InvoiceService } from './invoice.service';
 
 @Controller('/invoices')
 export class InvoiceController {
-  constructor(private readonly invoiceRepository: InvoiceRepository) {}
+  constructor(
+    private readonly invoiceRepository: InvoiceRepository,
+    private readonly invoiceService: InvoiceService,
+  ) {}
 
   @Get('/find-many-with-order-status')
   async findManyWithOrderPrice(@Body() findOrderPriceDto: FindOrderPriceDto) {
@@ -23,5 +27,10 @@ export class InvoiceController {
   @Get('/find-many-with-status')
   async findManyWithStatus() {
     return this.invoiceRepository.findManyWithStatus();
+  }
+
+  @Post('/bulc-invoices')
+  async bulcOrderProduct() {
+    return await this.invoiceService.bulcInvoices();
   }
 }

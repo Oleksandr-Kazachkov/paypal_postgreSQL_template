@@ -9,9 +9,12 @@ import { SettingsRepository } from '../settings/settings.repository';
 import { settingsProviders } from '../settings/provider/settings.provider';
 import { databaseProviders } from 'src/postgres/postgres.provider';
 import { FakerService } from 'src/utils/faker/faker.service';
+import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
+import { userTelegramProviders } from '../telegram/telegramUsers/user.telegram.provider';
+import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [DatabaseModule, ElasticSearchModule],
   providers: [
     ...userProviders,
     UserService,
@@ -21,6 +24,8 @@ import { FakerService } from 'src/utils/faker/faker.service';
     SettingsRepository,
     ...databaseProviders,
     FakerService,
+    ...userTelegramProviders,
+    TelegramUserRepository,
   ],
   controllers: [UserController],
 })

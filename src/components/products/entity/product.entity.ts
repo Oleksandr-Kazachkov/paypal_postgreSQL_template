@@ -1,5 +1,11 @@
-import { OrderProductsEntity } from 'src/components/order/entity/order.products.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import { OrderEntity } from 'src/components/order/entity/order.entity';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToMany,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity('product')
 export class ProductEntity {
@@ -33,9 +39,7 @@ export class ProductEntity {
   @Column({ type: 'int', default: null })
   product_grade: number;
 
-  @ManyToMany(
-    () => OrderProductsEntity,
-    (order_products) => order_products.product,
-  )
-  order: OrderProductsEntity;
+  @ManyToMany(() => OrderEntity)
+  @JoinColumn()
+  order: OrderEntity;
 }

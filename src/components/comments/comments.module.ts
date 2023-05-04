@@ -17,9 +17,10 @@ import { UserRepository } from '../user/user.repository';
 import { CommentController } from './comments.controller';
 import { CommentsRepository } from './comments.repository';
 import { commentsProviders } from './provider/comments.provider';
+import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, ElasticSearchModule],
   providers: [
     ...commentsProviders,
     ...databaseProviders,

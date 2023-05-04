@@ -10,6 +10,7 @@ import {
 import { UserEntity } from 'src/components/user/entity/user.entity';
 import { InvoiceEntity } from 'src/components/invoices/entity/invoice.entity';
 import { OrderProductsEntity } from './order.products.entity';
+import { ProductEntity } from 'src/components/products/entity/product.entity';
 
 @Entity('order')
 export class OrderEntity {
@@ -26,11 +27,9 @@ export class OrderEntity {
   @Column({ default: 'PENDING', nullable: false, type: 'varchar' })
   status: string;
 
-  @ManyToMany(
-    () => OrderProductsEntity,
-    (order_products) => order_products.product,
-  )
-  order_products: OrderProductsEntity | number;
+  @ManyToMany(() => ProductEntity, (product) => product.order)
+  @JoinColumn()
+  order_products: OrderProductsEntity | ProductEntity;
 
   @Column({ type: 'text', default: new Date().toISOString() })
   created_at: Date;

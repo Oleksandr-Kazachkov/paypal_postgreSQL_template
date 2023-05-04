@@ -13,6 +13,7 @@ import { ProductEntity } from './entity/product.entity';
 import { LikesRepository } from '../likes/likes.repository';
 import { CommentsRepository } from '../comments/comments.repository';
 import { GradeRepository } from '../grade/grade.repository';
+import { ElasticService } from '../elasticSearch/elasticSearch.service';
 
 @Injectable()
 export class ProductService {
@@ -24,6 +25,7 @@ export class ProductService {
     private readonly likesRepository: LikesRepository,
     private readonly commentsRepository: CommentsRepository,
     private readonly gradeRepository: GradeRepository,
+    private readonly elasticSearchService: ElasticService,
   ) {}
 
   async createProduct(
@@ -121,5 +123,28 @@ export class ProductService {
     }
 
     throw new EntityMetadataNotFoundError('Product was not found');
+  }
+
+  async bulcProducts() {
+    const products = this.productRepository.findAll();
+
+    const operations = (await products).flatMap((doc) => [
+      { index: { _index: 'products' } },
+      {
+        id: doc.id,
+        name: doc.name,
+        description: doc.description,
+        type: doc.type,
+        category: doc.category,
+        price: doc.price,
+        currency: doc.currency,
+        product_paypal_id: doc.product_paypal_id,
+        amountOfLikes: doc.amountOfLikes,
+        product_grade: doc.product_grade,
+        order: doc.order,
+      },
+    ]);
+
+    await this.elasticSearchService.bulcItems(operations);
   }
 }

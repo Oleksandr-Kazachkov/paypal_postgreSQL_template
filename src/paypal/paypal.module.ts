@@ -9,9 +9,10 @@ import { databaseProviders } from 'src/postgres/postgres.provider';
 import { FakerService } from 'src/utils/faker/faker.service';
 import { PaypalController } from './paypal.controller';
 import { PaypalService } from './paypal.service';
+import { ElasticSearchModule } from 'src/components/elasticSearch/elasticSearch.module';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, ElasticSearchModule],
   providers: [
     PaypalService,
     OrderRepository,

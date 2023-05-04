@@ -34,6 +34,11 @@ import { SettingsRepository } from './components/settings/settings.repository';
 import { settingsProviders } from './components/settings/provider/settings.provider';
 import { InvoiceModule } from './components/invoices/invoice.module';
 import { FakerService } from './utils/faker/faker.service';
+import { SearchModule } from './postgres/elasticSearch/elastic-search.module';
+import { ElasticSearchModule } from './components/elasticSearch/elasticSearch.module';
+import { OrderProductsRepository } from './components/order/order.products.repository';
+import { orderProductsProviders } from './components/order/providers/order.products.provider';
+import { TelegramModule } from './components/telegram/telegram.module';
 
 @Module({
   imports: [
@@ -51,6 +56,8 @@ import { FakerService } from './utils/faker/faker.service';
     CommentsModule,
     GradeModule,
     InvoiceModule,
+    ElasticSearchModule,
+    TelegramModule,
   ],
   providers: [
     PaypalService,
@@ -68,6 +75,9 @@ import { FakerService } from './utils/faker/faker.service';
     SettingsRepository,
     InvoiceRepository,
     FakerService,
+    SearchModule,
+    OrderProductsRepository,
+    ...orderProductsProviders,
     ...invoiceProviders,
     ...settingsProviders,
     ...orderProviders,

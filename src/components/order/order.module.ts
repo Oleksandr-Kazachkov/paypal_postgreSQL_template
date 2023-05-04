@@ -27,9 +27,17 @@ import { OrderProductsEntity } from './entity/order.products.entity';
 import { orderProductsProviders } from './providers/order.products.provider';
 import { OrderProductsRepository } from './order.products.repository';
 import { FakerService } from 'src/utils/faker/faker.service';
+import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
 
 @Module({
-  imports: [DatabaseModule, PaypalModule, OrderModule, HttpModule, UserModule],
+  imports: [
+    DatabaseModule,
+    PaypalModule,
+    OrderModule,
+    HttpModule,
+    UserModule,
+    ElasticSearchModule,
+  ],
   providers: [
     ...orderProviders,
     ...userProviders,

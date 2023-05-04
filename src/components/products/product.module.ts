@@ -14,9 +14,10 @@ import { LikesRepository } from '../likes/likes.repository';
 import { CommentsRepository } from '../comments/comments.repository';
 import { GradeRepository } from '../grade/grade.repository';
 import { FakerService } from 'src/utils/faker/faker.service';
+import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
 
 @Module({
-  imports: [DatabaseModule, PaypalModule, HttpModule],
+  imports: [DatabaseModule, PaypalModule, HttpModule, ElasticSearchModule],
   providers: [
     ...productProviders,
     ...likesProviders,

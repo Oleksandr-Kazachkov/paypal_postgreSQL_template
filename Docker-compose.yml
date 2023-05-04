@@ -10,3 +10,21 @@ services:
       POSTGRES_DATABASE: "paypalDatabase"
       POSTGRES_PASSWORD: "mysecretpassword"
       POSTGRES_USER: "postgresTest"
+
+  elasticsearch:
+    image: elasticsearch:8.2.2
+    container_name: postgres_elastic
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    
+  kibana:
+    image: kibana:8.2.2
+    container_name: postgres_kibana
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch

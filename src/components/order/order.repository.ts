@@ -17,6 +17,18 @@ export class OrderRepository {
     return this.orderRepository.find();
   }
 
+  async findAllWithRelations() {
+    const queryBuilder = this.orderRepository.createQueryBuilder('order');
+
+    queryBuilder
+      .select(
+        'order.id, order.status, order.userId, op.productId , order.created_at, order.updated_at',
+      )
+      .leftJoin('order_products', 'op', 'op."orderId" = order.id');
+
+    return queryBuilder.getRawMany();
+  }
+
   async saveOrder(
     createOrderDto: CreateOrderDto,
   ): Promise<OrderEntity | undefined> {
@@ -26,6 +38,15 @@ export class OrderRepository {
   async findOneOrderById(userId: number): Promise<OrderEntity | undefined> {
     return this.orderRepository.findOne({
       where: { user: userId },
+    });
+  }
+
+  async findOneByOrderId(orderId: number): Promise<any> {
+    return this.orderRepository.findOne({
+      where: {
+        id: orderId,
+      },
+      relations: ['user'],
     });
   }
 
@@ -85,132 +106,8 @@ export class OrderRepository {
       .then(([result]) => result?.sum) as Promise<number>;
   }
 
-  async getGraphForPieByOrderStatus() {
-    const dataset = {
-      label: 'My First Dataset',
-      data: [],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-        'rgba(255, 205, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(201, 203, 207, 0.2)',
-        'rgba(100, 100, 100, 0.2)',
-        'rgba(112, 112, 112, 0.2)',
-        'rgba(129, 129, 129, 0.2)',
-        'rgba(194, 194, 194, 0.2)',
-        'rgba(201, 201, 201, 0.2)',
-      ],
-      borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
-        'rgb(255, 205, 86)',
-        'rgb(75, 192, 192)',
-        'rgb(54, 162, 235)',
-        'rgb(153, 102, 255)',
-        'rgb(201, 203, 207)',
-        'rgb(100, 100, 100)',
-        'rgb(112, 112, 112)',
-        'rgb(129, 129, 129)',
-        'rgb(194, 194, 194)',
-        'rgb(201, 201, 201)',
-      ],
-      borderWidth: 1,
-    };
-
-    const labels = ['COMPLETED', 'PENDING'];
-    const data = {
-      labels: labels,
-      datasets: [],
-    };
-
-    const orders = await this.orderRepository.find();
-    const length = [];
-
-    labels.map((el) => {
-      return length.push(
-        orders.filter((element) => el === element.status).length,
-      );
-    });
-
-    length.forEach((el) => {
-      dataset.data.push(el);
-    });
-
-    data.datasets.push(dataset);
-
-    return data;
-  }
-
-  getMonth(monthMin: number, monthMax: number) {
-    const response = [];
-
-    for (let i = monthMin; i < monthMax; i++) {
-      switch (i) {
-        case 0:
-          response.push('January');
-          break;
-        case 1:
-          response.push('February');
-          break;
-        case 2:
-          response.push('March');
-          break;
-        case 3:
-          response.push('April');
-          break;
-        case 4:
-          response.push('May');
-          break;
-        case 5:
-          response.push('June');
-          break;
-        case 6:
-          response.push('July');
-          break;
-        case 7:
-          response.push('August');
-          break;
-        case 8:
-          response.push('September');
-          break;
-        case 9:
-          response.push('October');
-          break;
-        case 10:
-          response.push('November');
-          break;
-        case 11:
-          response.push('December');
-          break;
-      }
-    }
-
-    return response;
-  }
-
-  async getOrdersByTime(getOrdersByTimeDto: GetOrdersByTimeDto) {
-    const data = {
-      labels: [],
-      datasets: [],
-    };
-
-    const dataset = {
-      label: 'My First Dataset',
-      data: [],
-      fill: false,
-      borderColor: 'rgb(75, 192, 192)',
-      tension: 0.1,
-    };
-
-    data.labels = this.getMonth(
-      new Date(getOrdersByTimeDto.dateMin).getMonth(),
-      new Date(getOrdersByTimeDto.dateMax).getMonth(),
-    );
-
-    const orders = await this.orderRepository.find({
+  async findByTime(getOrdersByTimeDto: GetOrdersByTimeDto) {
+    return await this.orderRepository.find({
       where: {
         created_at: Between(
           getOrdersByTimeDto.dateMin,
@@ -218,20 +115,49 @@ export class OrderRepository {
         ),
       },
     });
+  }
 
-    data.labels.forEach(() => {
-      dataset.data.push(0);
+  async test() {
+    return this.orderRepository.find({
+      relations: ['order_products'],
+      loadRelationIds: {
+        relations: ['productId'],
+      },
     });
+  }
 
-    orders.forEach((el) => {
-      if (new Date(el.created_at).getMonth() < data.labels.length) {
-        dataset.data[new Date(el.created_at).getMonth()] =
-          dataset.data[new Date(el.created_at).getMonth()] + 1;
-      }
-    });
-
-    data.datasets.push(dataset);
-
-    return data;
+  async findForReport() {
+    // const data = `'${new Date().toISOString()}'`;
+    const data = '2023-05-02T13:30:26.683Z';
+    console.log(data);
+    return this.orderRepository
+      .createQueryBuilder()
+      .select(
+        `(
+    SELECT COUNT(*)
+    FROM "order" o
+    WHERE o."created_at"::date = :data::date
+  )`,
+        'amountOfOrders',
+      )
+      .addSelect(
+        `(
+    SELECT SUM(i.price)
+    FROM invoice i
+    WHERE i."orderId" IN (
+      SELECT o.id
+      FROM "order" o
+      WHERE o."created_at"::date = :data::date
+    )
+  ) / 100`,
+        'orderPrice',
+      )
+      .addSelect(`ARRAY_AGG(DISTINCT product.name)`, 'ProductNames')
+      .from('order_products', 'op')
+      .innerJoin('op.order', 'o')
+      .leftJoin('op.product', 'product')
+      .where(`o."created_at"::date = :data::date`)
+      .setParameter('data', data)
+      .getRawOne();
   }
 }
