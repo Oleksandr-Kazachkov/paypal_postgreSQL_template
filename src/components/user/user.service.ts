@@ -9,6 +9,20 @@ export class UserService {
     private readonly elasticSearchService: ElasticService,
   ) {}
 
+  googleLogin(req) {
+    console.log(req);
+    // if (!req.user) {
+    //   return 'No user from google';
+    // }
+
+    console.log('here2');
+
+    return {
+      message: 'User information from google',
+      user: req.user,
+    };
+  }
+
   async usersByMonth(year: any): Promise<any> {
     const labels = [
       'January',

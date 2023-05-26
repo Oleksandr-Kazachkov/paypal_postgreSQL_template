@@ -1,9 +1,8 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import CreateUserDto from './dto/create.user.dto';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
-
 @Controller('/users')
 export default class UserController {
   constructor(
