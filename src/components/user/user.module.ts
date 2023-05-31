@@ -14,6 +14,7 @@ import { userTelegramProviders } from '../telegram/telegramUsers/user.telegram.p
 import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
 import { GoogleStrategy } from '../guards/google.strategy';
 import { GoogleModule } from '../guards/google/google.module';
+import { GoogleService } from '../guards/google/google.service';
 
 @Module({
   imports: [DatabaseModule, ElasticSearchModule, GoogleModule],
@@ -29,6 +30,7 @@ import { GoogleModule } from '../guards/google/google.module';
     ...userTelegramProviders,
     TelegramUserRepository,
     GoogleStrategy,
+    GoogleService,
   ],
   controllers: [UserController],
 })
