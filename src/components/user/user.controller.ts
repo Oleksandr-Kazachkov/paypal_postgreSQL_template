@@ -1,15 +1,25 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import CreateUserDto from './dto/create.user.dto';
 import { UserRepository } from './user.repository';
 import { UserService } from './user.service';
 import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
-
+import { GoogleService } from '../guards/google/google.service';
+import { AuthGuard } from '@nestjs/passport';
 @Controller('/users')
 export default class UserController {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly userService: UserService,
     private readonly userTelegramRepository: TelegramUserRepository,
+    private readonly googleService: GoogleService,
   ) {}
 
   @Post('/create-user')
@@ -18,6 +28,18 @@ export default class UserController {
 
     await this.userTelegramRepository.save({
       first_name: createUserDto.name,
+    });
+
+    return user;
+  }
+
+  @Get('/create-user-from-google')
+  @UseGuards(AuthGuard('google'))
+  async createUserFromGoogle(@Req() req) {
+    req.user.password = 'googleAuth';
+    const user = await this.userRepository.save(req.user);
+    await this.userTelegramRepository.save({
+      first_name: req.user.name,
     });
 
     return user;

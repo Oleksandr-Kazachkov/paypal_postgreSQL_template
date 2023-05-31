@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Login Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 300px;
+      margin: 0 auto;
+      margin-top: 100px;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+    }
+
+    .container input[type="text"],
+    .container input[type="password"] {
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .container button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .container button:hover {
+      background-color: #45a049;
+    }
+
+    .container .google-auth {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form action="/users/create-user" method="post">
+      <input type="text" placeholder="Name" name="name" required><br>
+      <input type="text" placeholder="Email" name="email" required><br>
+      <input type="password" placeholder="Password" name="password" required><br>
+      <button type="submit">Log In</button>
+    </form>
+    <div class="google-auth">
+      <button onclick="location.href = '/users/create-user-from-google'">Log in with Google</button>
+    </div>
+  </div>
+</body>
+
+
+</html>

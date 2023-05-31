@@ -39,12 +39,22 @@ import { ElasticSearchModule } from './components/elasticSearch/elasticSearch.mo
 import { OrderProductsRepository } from './components/order/order.products.repository';
 import { orderProductsProviders } from './components/order/providers/order.products.provider';
 import { TelegramModule } from './components/telegram/telegram.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: '../.env',
       isGlobal: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(
+        `/home/oleksandrkazachkov/templates/paypal_template/paypal-template`,
+        'public',
+        '',
+      ),
+      exclude: ['/login'],
     }),
     DatabaseModule,
     UserModule,

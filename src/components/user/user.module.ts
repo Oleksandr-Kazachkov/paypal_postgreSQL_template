@@ -12,9 +12,12 @@ import { FakerService } from 'src/utils/faker/faker.service';
 import { ElasticSearchModule } from '../elasticSearch/elasticSearch.module';
 import { userTelegramProviders } from '../telegram/telegramUsers/user.telegram.provider';
 import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.repository';
+import { GoogleStrategy } from '../guards/google.strategy';
+import { GoogleModule } from '../guards/google/google.module';
+import { GoogleService } from '../guards/google/google.service';
 
 @Module({
-  imports: [DatabaseModule, ElasticSearchModule],
+  imports: [DatabaseModule, ElasticSearchModule, GoogleModule],
   providers: [
     ...userProviders,
     UserService,
@@ -26,6 +29,8 @@ import { TelegramUserRepository } from '../telegram/telegramUsers/user.telegram.
     FakerService,
     ...userTelegramProviders,
     TelegramUserRepository,
+    GoogleStrategy,
+    GoogleService,
   ],
   controllers: [UserController],
 })

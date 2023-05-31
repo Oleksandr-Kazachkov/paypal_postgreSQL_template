@@ -31,9 +31,13 @@ export class UserRepository {
       user = await manager.save(UserEntity, createUserDto);
       await manager.save(SettingsEntity, {
         user: user,
-        user_paypal_id: user.user_paypal_id,
-        email_notifications: createUserDto.email_notifications,
-        push_notifications: createUserDto.push_notifications,
+        user_paypal_id: user.user_paypal_id ? user.user_paypal_id : '',
+        email_notifications: createUserDto.email_notifications
+          ? createUserDto.email_notifications
+          : false,
+        push_notifications: createUserDto.push_notifications
+          ? createUserDto.push_notifications
+          : false,
       });
     });
 
